@@ -11,6 +11,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 public class ImageUtils {
     private static final int IMAGE_WIDTH = 512;
     private static final int IMAGE_HEIGHT = 512;
+    private static final int ABNORMAL_COLOR = 0x080808;
     
     public ImageUtils() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -34,6 +35,6 @@ public class ImageUtils {
     
     private void setAbnormalPoint(Point abnormalPoint, byte[] data){
         int offset = IMAGE_HEIGHT*(abnormalPoint.y - 1) + abnormalPoint.x;
-        data[offset] = (byte) 0xfff;
+        data[offset] = (byte) ABNORMAL_COLOR;
     } 
 }
