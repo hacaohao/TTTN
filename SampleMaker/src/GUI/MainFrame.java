@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Polygon;
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
@@ -193,19 +194,16 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
-         File directory = getDirectory();
+        DefaultListModel<String> nameListData = new DefaultListModel<>();
+        File directory = getDirectory();
            if(directory != null){
             directoryPath = StringHelper.getDirectoryPath(directory);
             sample.setDirectoryPath(directoryPath);
-            File[] filesInDirectory = directory.listFiles();
 
-            DefaultListModel<String> nameListData = new DefaultListModel<>();
-
-            for (File file : filesInDirectory) {
-                if(ImageUtils.isImage(file.getName())){
-                    nameListData.addElement(file.getName());
-                }
-            }
+            Arrays.stream(directory.listFiles())
+                  .filter(file -> ImageUtils.isImage(file.getName()))
+                  .map(File::getName)
+                  .forEach(name -> nameListData.addElement(name));
             
             if(nameListData.isEmpty()){
                 nameListData.addElement(NO_FILE);
@@ -223,7 +221,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
 
-        
     }//GEN-LAST:event_applyButtonActionPerformed
 
     private void imageNameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageNameListValueChanged
