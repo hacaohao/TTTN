@@ -1,15 +1,12 @@
 package GUI;
-import GUI.subFrame.SelectSampleFrame;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Polygon;
 import java.io.File;
 import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.ListModel;
+import model.dao.CoordinateGetter;
 import model.dao.ImageUtils;
-import model.dao.SampleConfig;
 import model.helper.StringHelper;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -17,24 +14,16 @@ public class MainFrame extends javax.swing.JFrame {
     
     private String directoryPath;
     private final ImageUtils imgProcObj;
-    public SampleConfig sample;
+    private CoordinateGetter coordinateGetter;
 
     public MainFrame() {
         initComponents();
-        imagePane.setPreferredSize(new Dimension(512, 512));
+        this.imagePane.setPreferredSize(new Dimension(512, 512));
         setLocationRelativeTo(null);
         
-        directoryPath = "";
-        imgProcObj = new ImageUtils();
-        sample = new SampleConfig();
-    }
-    
-    public Polygon getPolygon(){
-        return imagePane.getPolygon();
-    }
-    
-    public ListModel<String> getListOfImage(){
-        return imageNameList.getModel();
+        this.directoryPath = "";
+        this.imgProcObj = new ImageUtils();
+        this.coordinateGetter = new CoordinateGetter();
     }
 
     @SuppressWarnings("unchecked")
@@ -48,7 +37,6 @@ public class MainFrame extends javax.swing.JFrame {
         ImageContainer = new javax.swing.JScrollPane();
         imagePane = new component.ImagePane();
         applyButton = new javax.swing.JButton();
-        getSampleButton = new javax.swing.JButton();
         sampleButton = new javax.swing.JButton();
         viewButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
@@ -96,14 +84,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        getSampleButton.setText("Set type");
-        getSampleButton.setEnabled(false);
-        getSampleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getSampleButtonActionPerformed(evt);
-            }
-        });
-
         sampleButton.setText("Sample Mode");
         sampleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,9 +128,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(sampleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(getSampleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addGap(151, 151, 151))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(applyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,8 +146,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(sampleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(getSampleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ImageNameList)
@@ -196,9 +173,9 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultListModel<String> nameListData = new DefaultListModel<>();
         File directory = getDirectory();
-           if(directory != null){
-            directoryPath = StringHelper.getDirectoryPath(directory);
-            sample.setDirectoryPath(directoryPath);
+        
+        if(directory != null){
+            this.directoryPath = StringHelper.getDirectoryPath(directory);
 
             Arrays.stream(directory.listFiles())
                   .filter(file -> ImageUtils.isImage(file.getName()))
@@ -209,52 +186,45 @@ public class MainFrame extends javax.swing.JFrame {
                 nameListData.addElement(NO_FILE);
             }
 
-            imageNameList.setModel(nameListData);
+            this.imageNameList.setModel(nameListData);
         } 
     }//GEN-LAST:event_browseButtonActionPerformed
 
-    private void getSampleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getSampleButtonActionPerformed
-        // TODO add your handling code here:
-        SelectSampleFrame selectDialog = SelectSampleFrame.getInstance(this);
-        selectDialog.show();     
-    }//GEN-LAST:event_getSampleButtonActionPerformed
-
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
-
+        String chosenFileName = this.imageNameList.getSelectedValue();
+        
+        this.coordinateGetter.setPolygon(this.imagePane.getPolygon());
+        this.coordinateGetter.getCoordinateByPolygon(chosenFileName);
     }//GEN-LAST:event_applyButtonActionPerformed
 
     private void imageNameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageNameListValueChanged
         // TODO add your handling code here:
-        String chosenFile = imageNameList.getSelectedValue();
+        String chosenFile = this.imageNameList.getSelectedValue();
         
-        if (chosenFile != null && !chosenFile.equalsIgnoreCase(NO_FILE)) {
+        if (ImageUtils.isImage(chosenFile)) {
             String pathToSelectedFile = StringHelper.getAbsolutePath(directoryPath, chosenFile);
-            imgProcObj.setFilePath(pathToSelectedFile);
-            
-            if (ImageUtils.isImage(chosenFile)) {
-                updateImage(); 
-            } 
+            this.imgProcObj.setFilePath(pathToSelectedFile);
+            updateImage(); 
         }
     }//GEN-LAST:event_imageNameListValueChanged
 
     private void sampleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleButtonActionPerformed
-        imagePane.setIsGetSample(true);
+        this.imagePane.setIsGetSample(true);
         setCursor(Cursor.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_sampleButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        imagePane.setIsGetSample(false);
+        this.imagePane.setIsGetSample(false);
         setCursor(Cursor.DEFAULT_CURSOR);
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        imagePane.clearPolygon();
+        this.imagePane.clearPolygon();
     }//GEN-LAST:event_clearButtonActionPerformed
     
     private void updateImage(){
-        imagePane.setBackgroundImage(imgProcObj.loadImage());
-        getSampleButton.setEnabled(true);
-        applyButton.setEnabled(true);
+        this.imagePane.setBackgroundImage(imgProcObj.loadImage());
+        this.applyButton.setEnabled(true);
     }
     
     public static void main(String args[]) {
@@ -282,10 +252,8 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame().setVisible(true);
         });
     }
 
@@ -295,7 +263,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton applyButton;
     private javax.swing.JButton browseButton;
     private javax.swing.JButton clearButton;
-    private javax.swing.JButton getSampleButton;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JList<String> imageNameList;
     private component.ImagePane imagePane;

@@ -1,6 +1,10 @@
 package model.dao;
+import GUI.MainFrame;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import model.helper.StringHelper;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -9,16 +13,22 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtils {
-
     private String filePath = "";
-
+    private static final List<String> VALID_NAME_EXTENSION = Arrays.asList("jpg", "png", "jpeg");
+    
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
     
     public static boolean isImage(String fileName) {
         String extension = StringHelper.getExtension(fileName);
-        return extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpeg");
+        
+        boolean isValidFileName = (fileName != null) && !fileName.equalsIgnoreCase(MainFrame.NO_FILE);
+        boolean isValidExtension = VALID_NAME_EXTENSION
+                                   .stream()
+                                   .anyMatch(ext -> ext.equalsIgnoreCase(extension));
+        
+        return isValidFileName && isValidExtension;
     }
     
     public BufferedImage loadImage() {

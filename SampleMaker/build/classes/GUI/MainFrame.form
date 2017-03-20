@@ -49,9 +49,7 @@
               <Component id="sampleButton" min="-2" pref="115" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="clearButton" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="getSampleButton" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="151" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
@@ -74,7 +72,6 @@
                       <Component id="viewButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="sampleButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="clearButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="getSampleButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -159,15 +156,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="applyButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="getSampleButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Set type"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getSampleButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="sampleButton">

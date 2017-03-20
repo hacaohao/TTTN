@@ -9,30 +9,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CSVFileWriter {
-    private static final String FILE_NAME = "coordinate.csv";
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = System.lineSeparator();
-    private static final String SAVED_PATH = "D:\\";
+    private static final String SAVED_PATH_ROOT = "D:\\";
+    private static final String FILE_EXTENSION = ".csv";
     
-    public static void writeToFile(ArrayList<Point> coordinateValues){
+    private static String savedPath;
+    
+    public static void writeToFile(ArrayList<Point> coordinateValues, String fileName){
         try {
-            prepareFile();
+            prepareFile(fileName);
             writeFile(coordinateValues);
         } catch (IOException ex) {
             Logger.getLogger(CSVFileWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private static void prepareFile() throws IOException{
-        File savedFile = new File(SAVED_PATH + FILE_NAME);
-        
-        if(!savedFile.isFile()) {
-            savedFile.createNewFile();
-        }
+    private static void prepareFile(String fileName) throws IOException{
+        savedPath = SAVED_PATH_ROOT + fileName + FILE_EXTENSION;
+        System.out.println(savedPath);
+        File savedFile = new File(savedPath);
+        savedFile.createNewFile();
     }
     
     private static void writeFile(ArrayList<Point> coordinateValues) throws IOException{
-        FileWriter fileWriter = new FileWriter(SAVED_PATH + FILE_NAME);
+        System.out.println("Start writing");
+        FileWriter fileWriter = new FileWriter(savedPath);
         
         for(Point pointCoordinate : coordinateValues){
             fileWriter.append(String.valueOf(pointCoordinate.x));
@@ -44,5 +46,7 @@ public class CSVFileWriter {
             
         fileWriter.flush();
         fileWriter.close();
+        
+        System.out.println("Finish writing");
     }   
 }
