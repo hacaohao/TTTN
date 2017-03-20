@@ -5,8 +5,8 @@ import java.io.File;
 import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import model.dao.CoordinateGetter;
-import model.dao.ImageUtils;
+import model.utils.CoordinateGetter;
+import model.utils.ImageUtils;
 import model.helper.StringHelper;
 
 public class MainFrame extends javax.swing.JFrame {

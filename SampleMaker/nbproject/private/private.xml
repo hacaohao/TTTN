@@ -3,9 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/github%20code/TTTN/SampleMaker/src/model/io/CSVFileWriter.java</file>
             <file>file:/D:/github%20code/TTTN/SampleMaker/src/GUI/MainFrame.java</file>
-            <file>file:/D:/github%20code/TTTN/SampleMaker/src/component/ImagePane.java</file>
-            <file>file:/D:/github%20code/TTTN/SampleMaker/src/model/dao/PixelValuesGetter.java</file>
+            <file>file:/D:/github%20code/TTTN/SampleMaker/src/model/dao/CoordinateGetter.java</file>
         </group>
     </open-files>
 </project-private>
