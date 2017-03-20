@@ -5,9 +5,9 @@ import java.io.File;
 import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import model.helper.StringHelper;
 import model.utils.CoordinateGetter;
 import model.utils.ImageUtils;
-import model.helper.StringHelper;
 
 public class MainFrame extends javax.swing.JFrame {
     public static final String NO_FILE = "No file";
@@ -158,16 +158,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private File getDirectory(){
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
-        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            return fileChooser.getSelectedFile(); 
-        }  
-        
-        return null;
-    }
     
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
@@ -180,6 +170,32 @@ public class MainFrame extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_browseButtonActionPerformed
 
+    private File getDirectory(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            return fileChooser.getSelectedFile(); 
+        }  
+        
+        return null;
+    }
+    
+    private DefaultListModel<String> getNameListDataFromDirectory(File directory){
+        DefaultListModel<String> nameListData = new DefaultListModel<>();
+        
+        Arrays.stream(directory.listFiles())
+                  .filter(file -> StringHelper.isImage(file.getName()))
+                  .map(File::getName)
+                  .forEach(name -> nameListData.addElement(name));
+            
+        if(nameListData.isEmpty()){
+            nameListData.addElement(NO_FILE);
+        }
+        
+        return nameListData;
+    }
+    
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         String chosenFileName = this.imageNameList.getSelectedValue();
         
@@ -191,13 +207,18 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String chosenFile = this.imageNameList.getSelectedValue();
         
-        if (this.imgProcObj.isImage(chosenFile)) {
-            String pathToSelectedFile = StringHelper.getAbsolutePath(directoryPath, chosenFile);
+        if (StringHelper.isImage(chosenFile)) {
+            String pathToSelectedFile = StringHelper.getAbsolutePath(this.directoryPath, chosenFile);
             this.imgProcObj.setFilePath(pathToSelectedFile);
             updateImage(); 
         }
     }//GEN-LAST:event_imageNameListValueChanged
 
+    private void updateImage(){
+        this.imagePane.setBackgroundImage(this.imgProcObj.loadImage());
+        this.applyButton.setEnabled(true);
+    }
+    
     private void sampleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleButtonActionPerformed
         this.imagePane.setIsGetSample(true);
         setCursor(Cursor.CROSSHAIR_CURSOR);
@@ -211,26 +232,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         this.imagePane.clearPolygon();
     }//GEN-LAST:event_clearButtonActionPerformed
-    
-    private void updateImage(){
-        this.imagePane.setBackgroundImage(imgProcObj.loadImage());
-        this.applyButton.setEnabled(true);
-    }
-    
-    private DefaultListModel<String> getNameListDataFromDirectory(File directory){
-        DefaultListModel<String> nameListData = new DefaultListModel<>();
-        
-        Arrays.stream(directory.listFiles())
-                  .filter(file -> this.imgProcObj.isImage(file.getName()))
-                  .map(File::getName)
-                  .forEach(name -> nameListData.addElement(name));
-            
-        if(nameListData.isEmpty()){
-            nameListData.addElement(NO_FILE);
-        }
-        
-        return nameListData;
-    }
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

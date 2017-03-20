@@ -12,6 +12,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 public class ImagePane extends JPanel {
+    private static final int DEFAULT_IMAGE_WIDTH = 512;
+    private static final int DEFAULT_IMAGE_HEIGHT = 512;
+    
     private BufferedImage backgroundImage;
     private Polygon polygon;
     private boolean isGetSample;
@@ -60,7 +63,15 @@ public class ImagePane extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return this.backgroundImage == null ? new Dimension(512, 512) : new Dimension(this.backgroundImage.getWidth(), this.backgroundImage.getHeight());
+        return this.backgroundImage == null ? getDefaultDimension(): getBackgroundCustomizedDemension();
+    }
+    
+    private Dimension getDefaultDimension(){
+        return new Dimension(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
+    }
+    
+    private Dimension getBackgroundCustomizedDemension(){
+        return new Dimension(this.backgroundImage.getWidth(), this.backgroundImage.getHeight());
     }
 
     @Override

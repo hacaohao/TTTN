@@ -18,8 +18,9 @@ public class ImageUtils {
     
     public void writeImage(String fileName, List<Point> abnormalPoints){
         byte[] data = prepareData(abnormalPoints);
-        Mat mat = new Mat(512, 512, CvType.CV_8UC1, new Scalar(0));
+        Mat mat = new Mat(IMAGE_WIDTH, IMAGE_HEIGHT, CvType.CV_8UC1, new Scalar(0));
         mat.put(0, 0, data);
+        
         System.out.println(StringHelper.removeCSVExtension(fileName));
         Imgcodecs.imwrite(StringHelper.removeCSVExtension(fileName), mat);
     }
@@ -34,7 +35,5 @@ public class ImageUtils {
     private void setAbnormalPoint(Point abnormalPoint, byte[] data){
         int offset = IMAGE_HEIGHT*(abnormalPoint.y - 1) + abnormalPoint.x;
         data[offset] = (byte) 0xfff;
-    }
-    
-    
+    } 
 }

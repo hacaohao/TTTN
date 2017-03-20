@@ -74,16 +74,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private File getDirectory(){
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
-        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            return fileChooser.getSelectedFile(); 
-        }  
-        
-        return null;
-    }
     
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
@@ -97,9 +87,16 @@ public class MainFrame extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_browseButtonActionPerformed
 
-    private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
-        this.imageGenerator.createImage();
-    }//GEN-LAST:event_applyButtonActionPerformed
+    private File getDirectory(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            return fileChooser.getSelectedFile(); 
+        }  
+        
+        return null;
+    }
     
     private void setCSVFilePath(File directory){
         List<String> fileNames = Arrays.asList(directory.listFiles())
@@ -111,6 +108,10 @@ public class MainFrame extends javax.swing.JFrame {
         this.imageGenerator.setFiles(fileNames);
         this.imageGenerator.setCSVFilePath(this.directoryPath);
     }
+    
+    private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
+        this.imageGenerator.createImage();
+    }//GEN-LAST:event_applyButtonActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -1,11 +1,6 @@
 package model.utils;
-import GUI.MainFrame;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import model.helper.StringHelper;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -14,7 +9,6 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageUtils {
     private String filePath = "";
-    private final List<String> VALID_NAME_EXTENSION = Arrays.asList("jpg", "png", "jpeg");
 
     public ImageUtils() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -22,17 +16,6 @@ public class ImageUtils {
     
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-    
-    public boolean isImage(String fileName) {
-        String extension = StringHelper.getExtension(fileName);
-        
-        boolean isValidFileName = (fileName != null) && !fileName.equalsIgnoreCase(MainFrame.NO_FILE);
-        boolean isValidExtension = VALID_NAME_EXTENSION
-                                   .stream()
-                                   .anyMatch(ext -> ext.equalsIgnoreCase(extension));
-        
-        return isValidFileName && isValidExtension;
     }
     
     public BufferedImage loadImage() {
