@@ -66,6 +66,11 @@ public class ImagePane extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawBackground(g);
+        drawPolygon(g);
+    }
+    
+    private void drawBackground(Graphics g){
         if (this.backgroundImage != null) {
             Graphics2D g2d = (Graphics2D) g.create();
             int x = (getWidth() - this.backgroundImage.getWidth()) / 2;
@@ -74,7 +79,9 @@ public class ImagePane extends JPanel {
             
             g2d.dispose();
         }
-        
+    }
+    
+    private void drawPolygon(Graphics g){
         if(this.polygon.npoints != 0){
             g.setColor(Color.red);
             g.drawPolygon(this.polygon);

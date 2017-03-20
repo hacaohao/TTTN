@@ -14,7 +14,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private String directoryPath;
     private final ImageUtils imgProcObj;
-    private CoordinateGetter coordinateGetter;
+    private final CoordinateGetter coordinateGetter;
 
     public MainFrame() {
         initComponents();
@@ -171,21 +171,11 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
-        DefaultListModel<String> nameListData = new DefaultListModel<>();
         File directory = getDirectory();
         
         if(directory != null){
             this.directoryPath = StringHelper.getDirectoryPath(directory);
-
-            Arrays.stream(directory.listFiles())
-                  .filter(file -> ImageUtils.isImage(file.getName()))
-                  .map(File::getName)
-                  .forEach(name -> nameListData.addElement(name));
-            
-            if(nameListData.isEmpty()){
-                nameListData.addElement(NO_FILE);
-            }
-
+            DefaultListModel<String> nameListData = getNameListDataFromDirectory(directory);
             this.imageNameList.setModel(nameListData);
         } 
     }//GEN-LAST:event_browseButtonActionPerformed
@@ -201,7 +191,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String chosenFile = this.imageNameList.getSelectedValue();
         
-        if (ImageUtils.isImage(chosenFile)) {
+        if (this.imgProcObj.isImage(chosenFile)) {
             String pathToSelectedFile = StringHelper.getAbsolutePath(directoryPath, chosenFile);
             this.imgProcObj.setFilePath(pathToSelectedFile);
             updateImage(); 
@@ -225,6 +215,21 @@ public class MainFrame extends javax.swing.JFrame {
     private void updateImage(){
         this.imagePane.setBackgroundImage(imgProcObj.loadImage());
         this.applyButton.setEnabled(true);
+    }
+    
+    private DefaultListModel<String> getNameListDataFromDirectory(File directory){
+        DefaultListModel<String> nameListData = new DefaultListModel<>();
+        
+        Arrays.stream(directory.listFiles())
+                  .filter(file -> this.imgProcObj.isImage(file.getName()))
+                  .map(File::getName)
+                  .forEach(name -> nameListData.addElement(name));
+            
+        if(nameListData.isEmpty()){
+            nameListData.addElement(NO_FILE);
+        }
+        
+        return nameListData;
     }
     
     public static void main(String args[]) {

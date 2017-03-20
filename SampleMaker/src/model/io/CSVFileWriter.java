@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.helper.StringHelper;
 
 public class CSVFileWriter {
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = System.lineSeparator();
-    private static final String SAVED_PATH_ROOT = "D:\\";
+    private static final String SAVED_PATH_ROOT = "D:/";
     private static final String FILE_EXTENSION = ".csv";
     
     private static String savedPath;
@@ -26,7 +27,7 @@ public class CSVFileWriter {
     }
     
     private static void prepareFile(String fileName) throws IOException{
-        savedPath = SAVED_PATH_ROOT + fileName + FILE_EXTENSION;
+        savedPath = StringHelper.getAbsolutePath(SAVED_PATH_ROOT, fileName) + FILE_EXTENSION;
         System.out.println(savedPath);
         File savedFile = new File(savedPath);
         savedFile.createNewFile();
@@ -34,6 +35,7 @@ public class CSVFileWriter {
     
     private static void writeFile(ArrayList<Point> coordinateValues) throws IOException{
         System.out.println("Start writing");
+        
         FileWriter fileWriter = new FileWriter(savedPath);
         
         for(Point pointCoordinate : coordinateValues){

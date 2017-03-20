@@ -14,13 +14,17 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageUtils {
     private String filePath = "";
-    private static final List<String> VALID_NAME_EXTENSION = Arrays.asList("jpg", "png", "jpeg");
+    private final List<String> VALID_NAME_EXTENSION = Arrays.asList("jpg", "png", "jpeg");
+
+    public ImageUtils() {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
     
-    public static boolean isImage(String fileName) {
+    public boolean isImage(String fileName) {
         String extension = StringHelper.getExtension(fileName);
         
         boolean isValidFileName = (fileName != null) && !fileName.equalsIgnoreCase(MainFrame.NO_FILE);
@@ -46,20 +50,7 @@ public class ImageUtils {
         return grayImage;
     }
     
-    public Mat createMask(){
-        Mat mask = loadMat();
-        
-        Imgproc.medianBlur(mask, mask, 19); //so cu la 33
-        Imgproc.threshold(mask, mask, 145, 10, Imgproc.THRESH_TOZERO_INV);
-        Imgproc.medianBlur(mask, mask, 47);
-        Imgproc.threshold(mask, mask, 10, 145, Imgproc.THRESH_BINARY);
-        
-        return mask;
-    }
-    
     public Mat loadMat() {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
         Mat mat = Imgcodecs.imread(this.filePath);
         Mat grayMat = new Mat(mat.height(), mat.width(), CvType.CV_8UC3);
         Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
