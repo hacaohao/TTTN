@@ -9,9 +9,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class ImageUtils {
-    private static final int IMAGE_WIDTH = 512;
-    private static final int IMAGE_HEIGHT = 512;
-    private static final int ABNORMAL_COLOR = 0x080808;
+    private static final int IMAGE_WIDTH = 480;
+    private static final int IMAGE_HEIGHT = 360;
+    private static final int ABNORMAL_COLOR = 0xffffff;
     
     public ImageUtils() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -19,7 +19,7 @@ public class ImageUtils {
     
     public void writeImage(String fileName, List<Point> abnormalPoints){
         byte[] data = prepareData(abnormalPoints);
-        Mat mat = new Mat(IMAGE_WIDTH, IMAGE_HEIGHT, CvType.CV_8UC1, new Scalar(0));
+        Mat mat = new Mat(IMAGE_HEIGHT, IMAGE_WIDTH, CvType.CV_8UC1, new Scalar(0));
         mat.put(0, 0, data);
         
         System.out.println(StringHelper.removeCSVExtension(fileName));
@@ -34,7 +34,7 @@ public class ImageUtils {
     }
     
     private void setAbnormalPoint(Point abnormalPoint, byte[] data){
-        int offset = IMAGE_HEIGHT*(abnormalPoint.y - 1) + abnormalPoint.x;
+        int offset = IMAGE_WIDTH*(abnormalPoint.y - 1) + abnormalPoint.x;
         data[offset] = (byte) ABNORMAL_COLOR;
     } 
 }
