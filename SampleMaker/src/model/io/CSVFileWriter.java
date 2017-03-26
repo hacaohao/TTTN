@@ -12,7 +12,7 @@ import model.helper.StringHelper;
 public class CSVFileWriter {
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = System.lineSeparator();
-    private static final String SAVED_PATH_ROOT = "D:/";
+    private static final String SAVED_PATH_ROOT = "D:/train";
     private static final String FILE_EXTENSION = ".csv";
     
     private static String savedPath;
