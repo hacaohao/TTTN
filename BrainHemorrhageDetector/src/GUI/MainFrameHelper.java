@@ -17,8 +17,8 @@ public class MainFrameHelper {
     public void writeResultToFile(String directoryPath){
         mPredictor.setDirectoryPath(directoryPath);
         String result = mPredictor.hasSick() ? ABNORMAL : NORMAL;
-        mIOoperator.writeFile(directoryPath + ":" + result);
-        mIOoperator.close();
+        //mIOoperator.writeFile(directoryPath + ":" + result);
+        //mIOoperator.close();
     }
     
     public DefaultListModel<String> getImageNamesList(File directory){

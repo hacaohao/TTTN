@@ -14,13 +14,14 @@ public class DataTransformer {
         return new CoordinateInstances(nonBackgroundPoints).getInstances();
     }
     
-    private List<Point> matToPoints(Mat mat){
+    public List<Point> matToPoints(Mat mat){
         List<Point> result = new ArrayList<>();
         
         for(int x = 0; x < mat.cols(); x++){
             for(int y = 0; y < mat.rows(); y++){
-                if(!mat.get(y, x).equals(BLACK_COLOR)){
+                if(mat.get(y, x)[0] != BLACK_COLOR){
                     result.add(new Point(x, y));
+                } else {
                 }
             }
         }
