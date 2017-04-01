@@ -1,11 +1,12 @@
 package model.util;
 
-import static model.GlobalConstant.*;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import static model.GlobalConstant.*;
 import model.datastore.CoordinateInstances;
 import org.opencv.core.Mat;
+import weka.core.Instances;
 
 public class DataTransformer {
     public Instances matToInstances(Mat mat){
@@ -25,7 +26,5 @@ public class DataTransformer {
         }
         
         return result;
-    }
-    
-    
+    }  
 }

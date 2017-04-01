@@ -1,11 +1,11 @@
 package model.io;
 
-import static model.GlobalConstant.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static model.GlobalConstant.*;
 
 public class IOoperator {
     private PrintWriter mWriter;  

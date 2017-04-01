@@ -1,13 +1,13 @@
 package GUI;
 
-import static model.GlobalConstant.*;
 import java.io.File;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import static model.GlobalConstant.*;
 import model.helper.DirectoryHelper;
 import model.io.IOoperator;
-import model.util.Predictor;
+import model.process.Predictor;
 
 public class MainFrameHelper {
     private final DirectoryHelper mDirectoryHelper = new DirectoryHelper();
