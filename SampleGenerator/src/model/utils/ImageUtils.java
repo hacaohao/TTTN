@@ -9,8 +9,8 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class ImageUtils {
-    private static final int IMAGE_WIDTH = 480;
-    private static final int IMAGE_HEIGHT = 360;
+    private static final int IMAGE_WIDTH = 512;
+    private static final int IMAGE_HEIGHT = 512;
     private static final int ABNORMAL_COLOR = 0xffffff;
     
     public ImageUtils() {
