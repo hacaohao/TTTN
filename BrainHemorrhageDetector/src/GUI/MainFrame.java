@@ -1,16 +1,18 @@
 package GUI;
 
 import java.io.File;
-import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import model.helper.StringHelper;
+import model.guiHelper.MainFrameHelper;
+import model.helper.DirectoryHelper;
+import model.helper.FileHelper;
 import model.util.ImageUtils;
 
 public class MainFrame extends javax.swing.JFrame {
-    public static final String NO_FILE = "No file";
     private final ImageUtils mImageProcessingObject = new ImageUtils();
+    private final MainFrameHelper mController = new MainFrameHelper();
+    private final DirectoryHelper mDirectoryHelper = new DirectoryHelper();
+    private final FileHelper mFileHelper = new FileHelper();
     private String mDirectoryPath;
     
     public MainFrame() {
@@ -116,66 +118,29 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void mButtonPredictActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonPredictActionPerformed
-
+        
     }//GEN-LAST:event_mButtonPredictActionPerformed
 
     private void mButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonBrowseActionPerformed
-        File chosenDirectory = getDirectory();
-        DefaultListModel<String> imageNamesList = getImageNamesList(chosenDirectory);
+        File chosenDirectory = mController.getNewDirectory();
+        DefaultListModel<String> imageNamesList = mController.getImageNamesList(chosenDirectory);
         
         mImageNameList.setModel(imageNamesList);      
-        if(nonEmptyDirectory(imageNamesList))
-            mDirectoryPath = StringHelper.getDirectoryPath(chosenDirectory);
+        if(mController.nonEmptyDirectory(imageNamesList))
+            mDirectoryPath = mDirectoryHelper.getDirectoryPath(chosenDirectory);
     }//GEN-LAST:event_mButtonBrowseActionPerformed
-
-    private File getDirectory(){
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
-        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            return fileChooser.getSelectedFile(); 
-        }  
-        
-        return null;
-    }
-    
-    private DefaultListModel<String> getImageNamesList(File directory){
-        DefaultListModel<String> nameListData = new DefaultListModel<>();
-        
-        if(directory != null){
-            Arrays.asList(directory.listFiles())
-                  .stream()
-                  .map(file -> file.getName())
-                  .filter(StringHelper::isImage)
-                  .forEach(nameListData::addElement);
-        }
-        
-        if(nameListData.isEmpty()){
-            nameListData.addElement(NO_FILE);
-        }
-        
-        return nameListData;
-    }
-    
-    private boolean nonEmptyDirectory(DefaultListModel<String> imageNamesList){
-        return !imageNamesList.contains(NO_FILE);
-    }
     
     private void mImageNameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_mImageNameListValueChanged
-        String chosenFile = mImageNameList.getSelectedValue();
-
-        if (StringHelper.isImage(chosenFile)) {
-            mImageProcessingObject.setFilePath(StringHelper.getAbsolutePath(mDirectoryPath, chosenFile));
-            updateImage();
-        }
+        updateImage();
+        mButtonPredict.setEnabled(true);
     }//GEN-LAST:event_mImageNameListValueChanged
-    
+       
     private void updateImage(){
+        mImageProcessingObject.setFilePath(mFileHelper.getAbsolutePath(mDirectoryPath, mImageNameList.getSelectedValue()));
         ImageIcon imageIcon = new ImageIcon(mImageProcessingObject.loadImage());
         mImageContainer.setIcon(imageIcon);
-        mButtonPredict.setEnabled(true);
     }
-       
+    
     private void mButtonPredictAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonPredictAllActionPerformed
         
     }//GEN-LAST:event_mButtonPredictAllActionPerformed

@@ -1,12 +1,11 @@
 package model.helper;
 
-import java.io.File;
 import java.util.Arrays;
 
-public class StringHelper { 
+public class FileHelper { 
     private static final String[] VALID_IMAGE_EXTENSION = new String[]{"jpg", "png", "jpeg"};
      
-    public static boolean isImage(String fileName) {
+    public boolean isImage(String fileName) {
         if(fileName == null) 
             return false;
         
@@ -14,17 +13,13 @@ public class StringHelper {
         return Arrays.asList(VALID_IMAGE_EXTENSION).stream().anyMatch(extension::equals);
     }
     
-    public static String getExtension(String fileName){
+    private String getExtension(String fileName){
         String[] fileNameComponents = fileName.split("\\.");
         int extensionIndex = fileNameComponents.length - 1;
         return fileNameComponents[extensionIndex];
     }
     
-    public static String getAbsolutePath(String directoryPath, String fileName){
+    public String getAbsolutePath(String directoryPath, String fileName){
         return directoryPath + "/" + fileName;
-    }
-    
-    public static String getDirectoryPath(File directory){
-        return directory.getAbsolutePath().replace("\\", "/");
     }
 }
