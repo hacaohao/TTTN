@@ -1,4 +1,4 @@
-package model.helper;
+package model.modelHelper;
 
 import java.util.Arrays;
 

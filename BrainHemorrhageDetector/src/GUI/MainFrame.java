@@ -4,10 +4,8 @@ import java.io.File;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import model.guiHelper.MainFrameHelper;
-import model.helper.URIHelper;
+import model.modelHelper.URIHelper;
 import model.util.ImageUtils;
-import model.util.Predictor;
-import static model.GlobalConstant.*;
 
 public class MainFrame extends javax.swing.JFrame {
     private final ImageUtils mImageProcessingObject = new ImageUtils();

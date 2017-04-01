@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import model.helper.DirectoryHelper;
+import model.modelHelper.DirectoryHelper;
 import model.io.IOoperator;
 import model.util.Predictor;
 
