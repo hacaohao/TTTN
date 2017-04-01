@@ -4,15 +4,15 @@ import java.io.File;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import model.guiHelper.MainFrameHelper;
-import model.helper.DirectoryHelper;
-import model.helper.FileHelper;
+import model.helper.URIHelper;
 import model.util.ImageUtils;
+import model.util.Predictor;
+import static model.GlobalConstant.*;
 
 public class MainFrame extends javax.swing.JFrame {
     private final ImageUtils mImageProcessingObject = new ImageUtils();
-    private final MainFrameHelper mController = new MainFrameHelper();
-    private final DirectoryHelper mDirectoryHelper = new DirectoryHelper();
-    private final FileHelper mFileHelper = new FileHelper();
+    private final MainFrameHelper mMainFrameHelper = new MainFrameHelper();
+    private final URIHelper mURIHelper = new URIHelper();
     private String mDirectoryPath;
     
     public MainFrame() {
@@ -118,16 +118,17 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void mButtonPredictActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonPredictActionPerformed
-        
+        mMainFrameHelper.writeResultToFile(mDirectoryPath);
     }//GEN-LAST:event_mButtonPredictActionPerformed
 
     private void mButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonBrowseActionPerformed
-        File chosenDirectory = mController.getNewDirectory();
-        DefaultListModel<String> imageNamesList = mController.getImageNamesList(chosenDirectory);
+        File chosenDirectory = mMainFrameHelper.getNewDirectory();
+        DefaultListModel<String> imageNamesList = mMainFrameHelper.getImageNamesList(chosenDirectory);
         
         mImageNameList.setModel(imageNamesList);      
-        if(mController.nonEmptyDirectory(imageNamesList))
-            mDirectoryPath = mDirectoryHelper.getDirectoryPath(chosenDirectory);
+        if(mMainFrameHelper.nonEmptyDirectory(imageNamesList)){
+            mDirectoryPath = mURIHelper.getDirectoryPath(chosenDirectory);
+        }
     }//GEN-LAST:event_mButtonBrowseActionPerformed
     
     private void mImageNameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_mImageNameListValueChanged
@@ -136,7 +137,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mImageNameListValueChanged
        
     private void updateImage(){
-        mImageProcessingObject.setFilePath(mFileHelper.getAbsolutePath(mDirectoryPath, mImageNameList.getSelectedValue()));
+        mImageProcessingObject.setFilePath(mURIHelper.getAbsolutePath(mDirectoryPath, mImageNameList.getSelectedValue()));
         ImageIcon imageIcon = new ImageIcon(mImageProcessingObject.loadImage());
         mImageContainer.setIcon(imageIcon);
     }

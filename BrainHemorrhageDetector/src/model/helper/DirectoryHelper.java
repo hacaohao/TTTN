@@ -14,8 +14,4 @@ public class DirectoryHelper {
                      .filter(fileHelper::isImage)
                      .collect(toList());
     }
-    
-    public String getDirectoryPath(File directory){
-        return directory.getAbsolutePath().replace("\\", "/");
-    }
 }

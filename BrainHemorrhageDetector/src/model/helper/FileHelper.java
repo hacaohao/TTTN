@@ -18,8 +18,4 @@ public class FileHelper {
         int extensionIndex = fileNameComponents.length - 1;
         return fileNameComponents[extensionIndex];
     }
-    
-    public String getAbsolutePath(String directoryPath, String fileName){
-        return directoryPath + "/" + fileName;
-    }
 }

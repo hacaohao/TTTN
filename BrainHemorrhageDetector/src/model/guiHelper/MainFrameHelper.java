@@ -6,9 +6,20 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import model.helper.DirectoryHelper;
+import model.io.IOoperator;
+import model.util.Predictor;
 
 public class MainFrameHelper {
     private final DirectoryHelper mDirectoryHelper = new DirectoryHelper();
+    private final Predictor mPredictor = new Predictor();
+    private final IOoperator mIOoperator = new IOoperator();
+    
+    public void writeResultToFile(String directoryPath){
+        mPredictor.setDirectoryPath(directoryPath);
+        String result = mPredictor.hasSick() ? ABNORMAL : NORMAL;
+        mIOoperator.writeFile(directoryPath + ":" + result);
+        mIOoperator.close();
+    }
     
     public DefaultListModel<String> getImageNamesList(File directory){
         DefaultListModel<String> nameListData = new DefaultListModel<>();
