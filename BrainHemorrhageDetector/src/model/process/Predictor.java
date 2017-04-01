@@ -20,30 +20,19 @@ public class Predictor {
 
     public boolean hasSick() {
         List<String> imageAbsolutePathes = getImages();
-        System.out.println("xong doan 1");
-        List<Mat> transformedMat = transformFromPathesToMats(imageAbsolutePathes);
-        System.out.println("xong doan 2");
-        List<Instances> clusteredInstances = transformFormMatsToInstances(transformedMat);
-        System.out.println("xong doan 3");
-        clusteredInstances.stream().forEach(System.out::println);
+        long start = System.currentTimeMillis();
+        List<Instances> clusteredInstances = imageAbsolutePathes
+                                            .stream()
+                                            .map(this::getMatsByImagePathes)
+                                            .map(new ImageFilter()::applyFilter)
+                                            .parallel()
+                                            .map(new DataTransformer()::matToInstances)
+                                            .map(instances -> new DBscanClassifier(instances).clusterInstances())
+                                            .sequential()
+                                            .collect(toList());
+        System.out.println(System.currentTimeMillis() - start);
         
         return true;
-    }
-    
-    private List<Mat> transformFromPathesToMats(List<String> imageAbsolutePathes){
-        List<Mat> originalMats = transformListFrom(imageAbsolutePathes, this::getMatByImagePath);
-        return transformListFrom(originalMats, new ImageFilter()::transform);
-    }
-    
-    private List<Instances> transformFormMatsToInstances(List<Mat> transformedMat){
-        List<Instances> originalInstances = transformListFrom(transformedMat, new DataTransformer()::matToInstances); 
-        return originalInstances.stream()
-                                .map(instances -> new DBscanClassifier(instances).clusterInstances())
-                                .collect(toList());
-    }
-    
-    private <T, R> List<T> transformListFrom(List<R> oldList, Function<R, T> transformFunction ){
-        return oldList.stream().map(transformFunction).collect(toList());
     }
     
     private List<String> getImages(){
@@ -54,7 +43,7 @@ public class Predictor {
         return allImages.subList(startIndex, endIndex);
     } 
     
-    private Mat getMatByImagePath(String filePath){
+    private Mat getMatsByImagePathes(String filePath){
         mImageProcessingObject.setFilePath(filePath);
         return mImageProcessingObject.loadMat();
     }

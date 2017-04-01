@@ -24,7 +24,6 @@ public class CoordinateInstances {
     public Instances getInstances(){
         FastVector header = getHeader();
         int capacity = mSampleData.size();
-        
         Instances instances = new Instances(RELATION_NAME, header, capacity);
         
         for(int instanceIndex = 0; instanceIndex < capacity; instanceIndex++){
