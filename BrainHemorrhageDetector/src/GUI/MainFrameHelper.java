@@ -1,11 +1,11 @@
-package model.guiHelper;
+package GUI;
 
 import static model.GlobalConstant.*;
 import java.io.File;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import model.modelHelper.DirectoryHelper;
+import model.helper.DirectoryHelper;
 import model.io.IOoperator;
 import model.util.Predictor;
 

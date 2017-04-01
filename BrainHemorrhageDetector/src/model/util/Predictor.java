@@ -1,8 +1,9 @@
 package model.util;
 
 import java.util.List;
+import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
-import model.modelHelper.DirectoryHelper;
+import model.helper.DirectoryHelper;
 import org.opencv.core.Mat;
 
 public class Predictor {
@@ -16,14 +17,15 @@ public class Predictor {
 
     public boolean hasSick() {
         List<String> imageAbsolutePathes = getImages();
-        List<Mat> originalMats = imageAbsolutePathes.stream()
-                                                 .map(this::getMatByImagePath)
-                                                 .collect(toList());
-        List<Mat> transformedMat = originalMats.stream()
-                                               .map(ImageFilter::transform)
-                                               .collect(toList());
+        List<Mat> originalMats = transformListFrom(imageAbsolutePathes, this::getMatByImagePath);
+        List<Mat> transformedMat = transformListFrom(originalMats, ImageFilter::transform);
+        List<Instances> originalInstances = transformListFrom(transformedMat, DataTransformer::matToInstances); 
         
         return true;
+    }
+    
+    private <T, R> List<T> transformListFrom(List<R> oldList, Function<R, T> transformFunction ){
+        return oldList.stream().map(transformFunction).collect(toList());
     }
     
     private List<String> getImages(){

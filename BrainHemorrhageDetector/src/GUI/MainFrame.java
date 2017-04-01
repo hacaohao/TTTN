@@ -3,8 +3,7 @@ package GUI;
 import java.io.File;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import model.guiHelper.MainFrameHelper;
-import model.modelHelper.URIHelper;
+import model.helper.URIHelper;
 import model.util.ImageUtils;
 
 public class MainFrame extends javax.swing.JFrame {

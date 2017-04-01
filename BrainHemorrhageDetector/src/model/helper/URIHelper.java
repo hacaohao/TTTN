@@ -1,4 +1,4 @@
-package model.modelHelper;
+package model.helper;
 
 import java.io.File;
 
