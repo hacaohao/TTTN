@@ -1,7 +1,6 @@
 package model.process;
 
 import java.util.List;
-import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 import model.helper.DirectoryHelper;
 import model.util.DataTransformer;
@@ -20,7 +19,6 @@ public class Predictor {
 
     public boolean hasSick() {
         List<String> imageAbsolutePathes = getImages();
-        long start = System.currentTimeMillis();
         List<Instances> clusteredInstances = imageAbsolutePathes
                                             .stream()
                                             .map(this::getMatsByImagePathes)
@@ -30,7 +28,7 @@ public class Predictor {
                                             .map(instances -> new DBscanClassifier(instances).clusterInstances())
                                             .sequential()
                                             .collect(toList());
-        System.out.println(System.currentTimeMillis() - start);
+        clusteredInstances.forEach(instances -> System.out.println(instances.numDistinctValues(instances.numAttributes() - 1)));
         
         return true;
     }
